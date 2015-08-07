@@ -9,6 +9,7 @@ import io.oasp.gastronomy.restaurant.offermanagement.common.api.WeeklyPeriod;
 import javax.persistence.Column;
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
@@ -25,17 +26,16 @@ public class SpecialEntity extends ApplicationPersistenceEntity implements Speci
 
   private OfferEntity offer;
 
-  @Embedded
-  private WeeklyPeriod activePeriod;
+  private WeeklyPeriodEmbeddable activePeriod;
 
   private Money specialPrice;
 
   private static final long serialVersionUID = 1L;
 
   /**
-   * Returns the name of this special.
+   * Returns the name of the {@link Special}.
    *
-   * @return name the name of this special.
+   * @return name the name of the {@link Special}.
    */
   @Override
   @Column(unique = true)
@@ -45,9 +45,9 @@ public class SpecialEntity extends ApplicationPersistenceEntity implements Speci
   }
 
   /**
-   * Sets the name of this special.
+   * Sets the name of the special.
    *
-   * @param name the name of this special.
+   * @param name the name of the special.
    */
   @Override
   public void setName(String name) {
@@ -60,6 +60,7 @@ public class SpecialEntity extends ApplicationPersistenceEntity implements Speci
    *
    * @return offer {@link Offer} this special applies for.
    */
+  @ManyToOne
   public OfferEntity getOffer() {
 
     return this.offer;
@@ -81,7 +82,8 @@ public class SpecialEntity extends ApplicationPersistenceEntity implements Speci
    * @return activePeriod the {@link WeeklyPeriodEmbeddable active period} this special applies for.
    */
   @Override
-  public WeeklyPeriod getActivePeriod() {
+  @Embedded
+  public WeeklyPeriodEmbeddable getActivePeriod() {
 
     return this.activePeriod;
   }
@@ -94,7 +96,7 @@ public class SpecialEntity extends ApplicationPersistenceEntity implements Speci
   @Override
   public void setActivePeriod(WeeklyPeriod activePeriod) {
 
-    this.activePeriod = activePeriod;
+    this.activePeriod = (WeeklyPeriodEmbeddable) activePeriod;
   }
 
   /**
